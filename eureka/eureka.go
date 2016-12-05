@@ -1,14 +1,17 @@
 package eureka
 
+
+
 import (
 	"strconv"
-	"github.com/hudl/fargo"
-	"github.com/satori/go.uuid"
-	"time"
-	"net/http"
-	"onebox-go-message-processor/config"
 	"log"
 	"strings"
+	"time"
+	"net/http"
+
+	"github.com/hudl/fargo"
+	"github.com/satori/go.uuid"
+	"github.com/joliva-ob/pod-doublecheck/config"
 )
 
 

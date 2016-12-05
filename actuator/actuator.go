@@ -2,7 +2,7 @@ package actuator
 
 import (
 	"encoding/json"
-	"onebox-go-message-processor/config"
+	"github.com/joliva-ob/pod-doublecheck/config"
 )
 
 
