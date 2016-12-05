@@ -1,0 +1,7 @@
+message-processor:
+  pre:
+    - echo "Building int-avet-conciliation Docker Image"
+  post:
+    - echo "Finished building int-avet-conciliation Docker Image"
+  build: Dockerfile
+  image: docker-registry.oneboxtickets.com/oneboxtm/int-avet-conciliation
