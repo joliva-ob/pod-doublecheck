@@ -29,6 +29,8 @@ func main() {
 
 	// Register to the service discovery
 	go eureka.Register(config.Configuration)
+
+	config.Log.Noticef("Application successfully started.")
 	eureka.CaptureInterruptSignal()
 	eureka.Deregister()
 	os.Exit(0)

@@ -14,19 +14,17 @@ import (
 	"github.com/joliva-ob/pod-doublecheck/config"
 )
 
-
 var _INSTANCEID string = uuid.NewV4().String()
 var _HEARTBEAT_MAX_CONSECUTIVE_ERRORS int = 5
 var _HEARTBEAT_SLEEPTIMEBETWEENHEARTBEATINSECONDS time.Duration = 10
-
 var _SECUREPORT int = 8443
 var _DATACENTER_NAME string = "MyOwn"
 
 
 func Register() {
-	eurekaUrl := cleanEurekaUrlIfNeeded(config.Configuration["eureka.client.serviceUrl.defaultZone"].(string))
 
-	conn := fargo.NewConn(eurekaUrl)
+	eurekaUrl := cleanEurekaUrlIfNeeded(config.Configuration["eureka.client.serviceUrl.defaultZone"].(string))
+	eurekaConn := fargo.NewConn(eurekaUrl)
 	instance := new(fargo.Instance)
 	instance.App = config.Configuration["spring.application.name"].(string)
 	instance.DataCenterInfo.Name = _DATACENTER_NAME
@@ -41,7 +39,7 @@ func Register() {
 	instance.Status = fargo.StatusType("UP")
 	instance.SetMetadataString("instanceId", _INSTANCEID)
 
-	err := conn.RegisterInstance(instance)
+	err := eurekaConn.RegisterInstance(instance)
 
 	if err != nil {
 		panic("cannot register in eureka")
@@ -90,3 +88,19 @@ func startHeartbeat(eurekaUrl string, appName string, hostname string, instance 
 		time.Sleep(_HEARTBEAT_SLEEPTIMEBETWEENHEARTBEATINSECONDS * time.Second)
 	}
 }
+
+
+// GetApps returns a map of all Applications
+func GetAppsList() map[string]*fargo.Application {
+
+	eurekaUrl := cleanEurekaUrlIfNeeded(config.Configuration["eureka.client.serviceUrl.defaultZone"].(string))
+	e := fargo.NewConn(eurekaUrl)
+	appsMap, _ := e.GetApps()
+
+	for i, a := range appsMap {
+		config.Log.Debugf("%v. Eureka app name: %v", i, a.Name)
+	}
+
+	return appsMap
+}
+
