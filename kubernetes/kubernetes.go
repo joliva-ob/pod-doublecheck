@@ -5,11 +5,14 @@ import (
 
   "os"
   "flag"
+  "strconv"
 
   "k8s.io/client-go/kubernetes"
   "k8s.io/client-go/pkg/api/v1"
   "k8s.io/client-go/tools/clientcmd"
+
   "github.com/joliva-ob/pod-doublecheck/config"
+  "github.com/joliva-ob/pod-doublecheck/handler"
 
 )
 
@@ -42,8 +45,10 @@ func GetPodsMap() map[string]bool {
     }
     for _, p := range pods.Items {
         podsMap[p.Status.ContainerStatuses[0].Name] = true
-        config.Log.Debugf("pod name: %v", p.Status.ContainerStatuses[0].Name)
+        //config.Log.Debugf("pod name: %v", p.Status.ContainerStatuses[0].Name)
     }
+    handler.AddMetric("Kubernetes pods", int64(len(pods.Items)), 300) // 300 Max number of pods allowed
+    config.Log.Infof(strconv.Itoa(len(pods.Items)) + " kubernetes pods found.")
 
     return podsMap
 }

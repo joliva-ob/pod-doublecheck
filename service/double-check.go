@@ -2,32 +2,39 @@ package service
 
 
 import (
-	 "time"
+	"time"
 	"strconv"
 	"strings"
+	"bytes"
 
 	"github.com/joliva-ob/pod-doublecheck/config"
 	"github.com/joliva-ob/pod-doublecheck/kubernetes"
 	"github.com/joliva-ob/pod-doublecheck/eureka"
 	"github.com/joliva-ob/pod-doublecheck/jacaranda"
 	"github.com/hudl/fargo"
+	"github.com/joliva-ob/pod-doublecheck/handler"
 )
-
 
 
 // Goroutine to schedule and keep looking for differences between kubernetes pods
 // and eureka registered apps
-func doubleCheckProcessor( checkIntervalTimeSec int, statusChan chan string ) {
+func doubleCheckProcessor( checkIntervalTimeSec int, RefreshTimeChan chan int ) {
 
-	ticker := time.Tick(time.Duration(checkIntervalTimeSec * 1000) * time.Millisecond)
+	timer := time.NewTimer(time.Duration(checkIntervalTimeSec * 1000) * time.Millisecond)
 	config.Log.Infof("DoubleChecker started every %v seconds.", checkIntervalTimeSec)
 
 	for {
 		select {
-		case <- ticker:
-			processPods(checkIntervalTimeSec)
-		case <- statusChan:
-			config.Log.Debugf("BookingChecker is up and running.")
+		case <- timer.C:
+			processPods()
+		case newRefreshTime := <- RefreshTimeChan:
+			if newRefreshTime == -1 {
+				timer.Stop()
+				config.Log.Noticef("Double-Check timer is now stopped.")
+			} else {
+				timer.Reset(time.Duration(newRefreshTime * 1000) * time.Millisecond)
+				config.Log.Noticef("New refresh time is: %v", newRefreshTime)
+			}
 		}
 	}
 
@@ -35,7 +42,7 @@ func doubleCheckProcessor( checkIntervalTimeSec int, statusChan chan string ) {
 
 
 
-func processPods( checkIntervalTimeSec int ) {
+func processPods( ) {
 
 	podsMap := kubernetes.GetPodsMap()	// k: pod name  v: bool found in eureka list
 	appsList := eureka.GetAppsList()	// k: app name	v: Eureka application
@@ -60,23 +67,25 @@ func compareToReport( pods map[string]bool, apps  map[string]*fargo.Application 
 	}
 
 	// Comunicate search results
-	// TODO: expose results to /kpi endpoint!
 	i := 0
+	var appsNotFoundBuffer bytes.Buffer
 	for p, b := range pods {
 		if !b {
-			config.Log.Warningf("Pod not found in Eureka apps list: %v", p)
 			i++
+			appsNotFoundBuffer.WriteString(strconv.Itoa(i)+". "+p+"\n\r")
+			config.Log.Warningf("Pod not found in Eureka app list: %v", p)
 		}
 	}
+	handler.AddMetric("Pods not found", int64(i), 0)
 	config.Log.Noticef("%v pods not found in Eureka apps list.", i)
 	if i > 0 {
-		message := "Alert: There are "+strconv.Itoa(i)+" pods not registered into Eureka!"
+		message := "Alert: There are "+strconv.Itoa(i)+" pods not registered into Eureka!\n\r"+appsNotFoundBuffer.String()
 		chatId := "146665083"
 		res, err := jacaranda.SendTelegramMessage(message, chatId)
 		if err != nil {
 			config.Log.Errorf("ERROR sending message <%v> to <%v>",message,chatId)
 		} else {
-			config.Log.Infof("Alert message <%v> successfuly sent to <%v> with response:%v",message,chatId,res.Status)
+			config.Log.Infof("Alert message %v successfuly sent to %v with response:%v",message,chatId,res.Status)
 		}
 	}
 
@@ -122,11 +131,11 @@ func searchPodNameInEurekaAppList( inPodTransformedName string, inAppList map[st
 	isFound := false
 	if inPodTransformedName == "CONFIG" || inPodTransformedName == "SPLUNKFORWARDER" || strings.HasSuffix(inPodTransformedName,"TEST") {
 		isFound = true // It just fake the result in order to avoid its verification, those never been registered into Eureka.
-		config.Log.Warningf("Pod FOUND in Eureka special apps list: %v", inPodTransformedName)
+		//config.Log.Warningf("Pod FOUND in Eureka special apps list: %v", inPodTransformedName)
 	} else {
 		for _, app := range inAppList {
 			if strings.Contains(app.Name, inPodTransformedName) {
-				config.Log.Warningf("Pod %v FOUND into Eureka app %v", inPodTransformedName, app.Name)
+				//config.Log.Warningf("Pod %v FOUND into Eureka app %v", inPodTransformedName, app.Name)
 				isFound = true
 				break
 			}

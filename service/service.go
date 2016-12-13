@@ -2,12 +2,14 @@ package service
 
 
 import (
-
+	"os"
+	"strconv"
+	"github.com/joliva-ob/pod-doublecheck/handler"
 )
 
 
 var (
-	statusChan = make(chan string)
+	RefreshTimeChan = make(chan int)
 )
 
 
@@ -15,7 +17,10 @@ var (
 func StartService() {
 
 
-	go doubleCheckProcessor( 10, statusChan )
+	refreshTime, _ := strconv.Atoi(os.Getenv("REFRESH_TIME_SECONDS"))
+	handler.RefreshTimeChan = RefreshTimeChan
+
+	go doubleCheckProcessor( refreshTime, RefreshTimeChan )
 
 
 }

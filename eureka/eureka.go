@@ -1,7 +1,6 @@
 package eureka
 
 
-
 import (
 	"strconv"
 	"log"
@@ -12,7 +11,10 @@ import (
 	"github.com/hudl/fargo"
 	"github.com/satori/go.uuid"
 	"github.com/joliva-ob/pod-doublecheck/config"
+	"github.com/joliva-ob/pod-doublecheck/handler"
 )
+
+
 
 var _INSTANCEID string = uuid.NewV4().String()
 var _HEARTBEAT_MAX_CONSECUTIVE_ERRORS int = 5
@@ -97,10 +99,11 @@ func GetAppsList() map[string]*fargo.Application {
 	e := fargo.NewConn(eurekaUrl)
 	appsMap, _ := e.GetApps()
 
-	for i, a := range appsMap {
-		config.Log.Debugf("%v. Eureka app name: %v", i, a.Name)
-	}
+	//for i, a := range appsMap {
+	//	config.Log.Debugf("%v. Eureka app name: %v", i, a.Name)
+	//}
+	config.Log.Infof(strconv.Itoa(len(appsMap))+" eureka apps found.")
+	handler.AddMetric("Eureka apps", int64(len(appsMap)), 300) // Max apps allowed
 
 	return appsMap
 }
-
