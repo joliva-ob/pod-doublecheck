@@ -15,7 +15,7 @@ var (
 func StartService() {
 
 
-	go doubleCheckProcessor( 60, statusChan )
+	go doubleCheckProcessor( 10, statusChan )
 
 
 }

@@ -3,6 +3,7 @@ package kubernetes
 
 import (
 
+  "os"
   "flag"
 
   "k8s.io/client-go/kubernetes"
@@ -35,7 +36,7 @@ func GetPodsMap() map[string]bool {
       panic(err.Error())
     }
 
-    pods, err := clientset.Core().Pods("pro").List(v1.ListOptions{})
+    pods, err := clientset.Core().Pods(os.Getenv("ENV")).List(v1.ListOptions{})
     if err != nil {
         panic(err.Error())
     }

@@ -20,3 +20,8 @@ func StartWebServer(port int) {
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("200"))
 }
+
+// TODO: PUT /start and PUT /stop alerting
+// TODO: set check scheduled time window with PUT /checktime
+// TODO: expose GET /metrics with
+
