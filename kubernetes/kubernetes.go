@@ -17,12 +17,20 @@ import (
 
 
 var (
-  kubeconfig = flag.String("kubeconfig", "kube/config", "absolute path to the kubeconfig file")
+  kubeconfig *string
 )
 
 
 func GetPodsMap() map[string]bool {
 
+    switch config.Configuration["ENV"] {
+    case "pre":
+            kubeconfig = flag.String("kubeconfig", "kube/config_pre", "absolute path to the kubeconfig file")
+    case "pro":
+            kubeconfig = flag.String("kubeconfig", "kube/config_pro", "absolute path to the kubeconfig file")
+    default:
+            kubeconfig = flag.String("kubeconfig", "kube/config_pre", "absolute path to the kubeconfig file")
+    }
     podsMap := make(map[string]bool)  // k: pod name v: found status, start from true
     flag.Parse()
 
@@ -44,7 +52,7 @@ func GetPodsMap() map[string]bool {
     }
     for _, p := range pods.Items {
         podsMap[p.Status.ContainerStatuses[0].Name] = true
-        //config.Log.Debugf("pod name: %v", p.Status.ContainerStatuses[0].Name)
+        //config_pre.Log.Debugf("pod name: %v", p.Status.ContainerStatuses[0].Name)
     }
     handler.AddMetric("Kubernetes pods", int64(len(pods.Items)), 300) // 300 Max number of pods allowed
     config.Log.Infof(strconv.Itoa(len(pods.Items)) + " kubernetes pods found.")

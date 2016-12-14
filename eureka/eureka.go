@@ -100,7 +100,7 @@ func GetAppsList() map[string]*fargo.Application {
 	appsMap, _ := e.GetApps()
 
 	//for i, a := range appsMap {
-	//	config.Log.Debugf("%v. Eureka app name: %v", i, a.Name)
+	//	config_pre.Log.Debugf("%v. Eureka app name: %v", i, a.Name)
 	//}
 	config.Log.Infof(strconv.Itoa(len(appsMap))+" eureka apps found.")
 	handler.AddMetric("Eureka apps", int64(len(appsMap)), 300) // Max apps allowed

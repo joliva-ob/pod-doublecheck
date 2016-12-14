@@ -66,7 +66,7 @@ func RefreshTimeHandler(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 	// return the current refresh time
 	case "PUT":
-		//config.Log.Debugf("PUT param received: %v", r.URL.RawQuery)
+		//config_pre.Log.Debugf("PUT param received: %v", r.URL.RawQuery)
 		newRefreshTime, _ := strconv.Atoi(r.URL.RawQuery)
 		RefreshTimeChan <- newRefreshTime
 	}

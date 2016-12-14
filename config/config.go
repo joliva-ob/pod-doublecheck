@@ -39,9 +39,9 @@ func LoadConfig() {
 	logging.SetBackend(logbackend1Formatted, logbackend2Formatted)
 	Log = logging.MustGetLogger( os.Getenv("spring_application_name") )
 
-	Log.Info("Loading config...")
+	Log.Info("Loading config_pre...")
 	newConfig := loadBasicsFromEnvironmentVars()
-	getConfigFromSpringCloudConfigServer(newConfig["spring.cloud.config.uri"].(string), newConfig)
+	getConfigFromSpringCloudConfigServer(newConfig["spring.cloud.config_pre.uri"].(string), newConfig)
 	Configuration = newConfig
 	Log.Info("Config loaded sucessfuly")
 
@@ -54,8 +54,8 @@ func loadBasicsFromEnvironmentVars() map[string]interface{} {
 
 	var newConfig map[string]interface{} = make(map[string]interface{})
 	newConfig["spring.profiles.active"] = os.Getenv("spring_profiles_active")
-	newConfig["spring.cloud.config.uri"] = os.Getenv("spring_cloud_config_uri")
-	newConfig["spring.cloud.config.label"] = os.Getenv("spring_cloud_config_label")
+	newConfig["spring.cloud.config_pre.uri"] = os.Getenv("spring_cloud_config_uri")
+	newConfig["spring.cloud.config_pre.label"] = os.Getenv("spring_cloud_config_label")
 	newConfig["server.port"] = os.Getenv("server_port")
 	newConfig["eureka.instance.ip-address"] = os.Getenv("eureka_instance_ip_address")
 	newConfig["spring.application.name"] = os.Getenv("spring_application_name")
@@ -74,7 +74,7 @@ func loadBasicsFromEnvironmentVars() map[string]interface{} {
 		newConfig["server.port"] = port
 	}
 
-	if newConfig["spring.profiles.active"] == "" || newConfig["spring.cloud.config.uri"] == "" || newConfig["spring.cloud.config.label"] == "" || newConfig["server.port"] == "" || newConfig["eureka.instance.ip-address"] == 0 || newConfig["spring.application.name"] == "" {
+	if newConfig["spring.profiles.active"] == "" || newConfig["spring.cloud.config_pre.uri"] == "" || newConfig["spring.cloud.config_pre.label"] == "" || newConfig["server.port"] == "" || newConfig["eureka.instance.ip-address"] == 0 || newConfig["spring.application.name"] == "" {
 		panic("spring_profiles_active , spring_cloud_config_uri , spring_cloud_config_label , server_port , eureka_instance_ip_address, spring_application_name environment vars are mandatories")
 	}
 
@@ -82,8 +82,8 @@ func loadBasicsFromEnvironmentVars() map[string]interface{} {
 }
 
 func getConfigFromSpringCloudConfigServer(uriEndpoint string, newConfig map[string]interface{}) {
-	finalEndpoint := uriEndpoint + "/" + newConfig["spring.application.name"].(string) + "/" + newConfig["spring.profiles.active"].(string) + "/" + newConfig["spring.cloud.config.label"].(string)
-	Log.Info("Getting config from " + finalEndpoint)
+	finalEndpoint := uriEndpoint + "/" + newConfig["spring.application.name"].(string) + "/" + newConfig["spring.profiles.active"].(string) + "/" + newConfig["spring.cloud.config_pre.label"].(string)
+	Log.Info("Getting config_pre from " + finalEndpoint)
 	rs, err := getJsonFromSpringCloudConfigServer(finalEndpoint)
 	if err != nil {
 		panic("can't load configuration from " + finalEndpoint)

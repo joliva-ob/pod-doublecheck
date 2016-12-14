@@ -58,7 +58,7 @@ type ConfigType struct {
  */
 func LoadConfiguration(filename string) ConfigType {
 
-	// Set config
+	// Set config_pre
 	source, err := ioutil.ReadFile(filename)
 	if err != nil {
 		panic(err)

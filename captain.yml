@@ -3,5 +3,5 @@ message-processor:
     - echo "Building pod-doublecheck Docker Image"
   post:
     - echo "Finished building pod-doublecheck Docker Image"
-  build: Dockerfile
+  build: Dockerfile.back.onebox
   image: docker-registry.oneboxtickets.com/oneboxtm/pod-doublecheck
