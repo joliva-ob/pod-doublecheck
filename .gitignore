@@ -1,4 +1,6 @@
 .idea
 *.log
-kube/*
+kube
+app
 docker-compose.yml
+pod-doublecheck*

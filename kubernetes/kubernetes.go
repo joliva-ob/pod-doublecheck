@@ -17,20 +17,12 @@ import (
 
 
 var (
-  kubeconfig *string
+  kubeconfig = flag.String("kubeconfig", "kube/config_"+config.Configuration["ENV"].(string), "absolute path to the kubeconfig file")
 )
 
 
 func GetPodsMap() map[string]bool {
 
-    switch config.Configuration["ENV"] {
-    case "pre":
-            kubeconfig = flag.String("kubeconfig", "kube/config_pre", "absolute path to the kubeconfig file")
-    case "pro":
-            kubeconfig = flag.String("kubeconfig", "kube/config_pro", "absolute path to the kubeconfig file")
-    default:
-            kubeconfig = flag.String("kubeconfig", "kube/config_pre", "absolute path to the kubeconfig file")
-    }
     podsMap := make(map[string]bool)  // k: pod name v: found status, start from true
     flag.Parse()
 
