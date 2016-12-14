@@ -3,4 +3,5 @@
 kube
 app
 docker-compose.yml
-pod-doublecheck*
+pod-doublecheck
+pod-doublecheck.*
