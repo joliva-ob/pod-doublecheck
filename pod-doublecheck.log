@@ -11942,3 +11942,30 @@ map[Content-Type:[application/json] Date:[Tue, 13 Dec 2016 08:43:24 GMT] Content
 6. int-vconfigcon-fcmal
 7. int-ticketing-fclev
  successfuly sent to -114003924 with response:200 OK"
+"1214 17:25:25.595 INFO 001 ▶ LoadConfig: [0m Loading config_pre..."
+"1214 17:25:25.659 INFO 002 ▶ getConfigFromSpringCloudConfigServer: [0m Getting config_pre from http://localhost:8888/pod-doublecheck/pre/pre"
+"1214 17:25:26.216 INFO 003 ▶ LoadConfig: [0m Config loaded sucessfuly"
+"[32m1214 17:25:26.216 NOTI 004 ▶ main: [0m Application successfully started."
+"1214 17:25:26.216 INFO 005 ▶ doubleCheckProcessor: [0m DoubleChecker started every 0 seconds."
+"1214 17:25:26.402 INFO 006 ▶ netReq: [0m Got eureka response from url=http://pre.eureka1.oneboxtickets.com:8761/eureka/apps/pod-doublecheck/MacBook-Pro-de-Joan.local"
+"[32m1214 17:25:26.402 NOTI 007 ▶ RegisterInstance: [0m Instance=MacBook-Pro-de-Joan.local not yet registered with App=pod-doublecheck, registering."
+"[36m1214 17:25:26.402 DEBU 008 ▶ postBody: [0m postBody: POST http://pre.eureka1.oneboxtickets.com:8761/eureka/apps/pod-doublecheck : <instance><hostName>MacBook-Pro-de-Joan.local</hostName><app>pod-doublecheck</app><ipAddr>10.200.2.28</ipAddr><vipAddress>pod-doublecheck</vipAddress><secureVipAddress>pod-doublecheck</secureVipAddress><status>UP</status><overriddenstatus></overriddenstatus><port>0</port><securePort>8443</securePort><homePageUrl>http://10.200.2.28:8080/</homePageUrl><statusPageUrl>http://10.200.2.28:8080/info</statusPageUrl><healthCheckUrl>http://10.200.2.28:8080/health</healthCheckUrl><countryId>0</countryId><dataCenterInfo><name>MyOwn</name><metadata><ami-launch-index></ami-launch-index><local-hostname></local-hostname><availability-zone></availability-zone><instance-id></instance-id><public-ipv4></public-ipv4><public-hostname></public-hostname><ami-manifest-path></ami-manifest-path><local-ipv4></local-ipv4><hostname></hostname><ami-id></ami-id><instance-type></instance-type></metadata></dataCenterInfo><leaseInfo><renewalIntervalInSecs>0</renewalIntervalInSecs><durationInSecs>0</durationInSecs><registrationTimestamp>0</registrationTimestamp><lastRenewalTimestamp>0</lastRenewalTimestamp><evictionTimestamp>0</evictionTimestamp><serviceUpTimestamp>0</serviceUpTimestamp></leaseInfo><metadata><instanceId>681101c4-36f6-433d-aebd-0becc6952f38</instanceId></metadata></instance>
+"
+"1214 17:25:26.459 INFO 009 ▶ netReq: [0m Got eureka response from url=http://pre.eureka1.oneboxtickets.com:8761/eureka/apps/pod-doublecheck"
+"1214 17:25:26.519 INFO 00a ▶ netReq: [0m Got eureka response from url=http://pre.eureka1.oneboxtickets.com:8761/eureka/apps/pod-doublecheck/MacBook-Pro-de-Joan.local"
+"1214 17:25:27.294 INFO 00b ▶ GetPodsMap: [0m 78 kubernetes pods found."
+"1214 17:25:27.345 INFO 00c ▶ netReq: [0m Got eureka response from url=http://pre.eureka1.oneboxtickets.com:8761/eureka/apps"
+"1214 17:25:27.352 INFO 00d ▶ GetAppsList: [0m 64 eureka apps found."
+"[33m1214 17:25:27.352 WARN 00e ▶ compareToReport: [0m Pod not found in Eureka app list: int-partner-fcsev"
+"[33m1214 17:25:27.352 WARN 00f ▶ compareToReport: [0m Pod not found in Eureka app list: prometheus"
+"[33m1214 17:25:27.352 WARN 010 ▶ compareToReport: [0m Pod not found in Eureka app list: int-ticketing-rfgra"
+"[33m1214 17:25:27.352 WARN 011 ▶ compareToReport: [0m Pod not found in Eureka app list: int-partner-rfgra"
+"[33m1214 17:25:27.352 WARN 012 ▶ compareToReport: [0m Pod not found in Eureka app list: int-vconfigcon-fcmal"
+"[32m1214 17:25:27.352 NOTI 013 ▶ compareToReport: [0m 5 pods not found in Eureka apps list."
+"1214 17:25:27.559 INFO 014 ▶ compareToReport: [0m Alert message Alert: [pre] There are 5 pods not registered into Eureka!
+1. int-partner-fcsev
+2. prometheus
+3. int-ticketing-rfgra
+4. int-partner-rfgra
+5. int-vconfigcon-fcmal
+ successfuly sent to -114003924 with response:200 OK"

@@ -17,37 +17,38 @@ import (
 
 
 var (
-  kubeconfig = flag.String("kubeconfig", "kube/config_"+config.Configuration["ENV"].(string), "absolute path to the kubeconfig file")
+  kubeconfig *string
 )
 
 
 func GetPodsMap() map[string]bool {
 
-    podsMap := make(map[string]bool)  // k: pod name v: found status, start from true
-    flag.Parse()
+        kubeconfig = flag.String("kubeconfig", "kube/config_"+config.Configuration["ENV"].(string), "absolute path to the kubeconfig file")
+        podsMap := make(map[string]bool)  // k: pod name v: found status, start from true
+        flag.Parse()
 
-    // uses the current context in kubeconfig
-    kconfig, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
-    if err != nil {
-      panic(err.Error())
-    }
-
-    // creates the clientset
-    clientset, err := kubernetes.NewForConfig(kconfig)
-    if err != nil {
-      panic(err.Error())
-    }
-
-    pods, err := clientset.Core().Pods(config.Configuration["ENV"].(string)).List(v1.ListOptions{})
-    if err != nil {
+        // uses the current context in kubeconfig
+        kconfig, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
+        if err != nil {
         panic(err.Error())
-    }
-    for _, p := range pods.Items {
+        }
+
+        // creates the clientset
+        clientset, err := kubernetes.NewForConfig(kconfig)
+        if err != nil {
+        panic(err.Error())
+        }
+
+        pods, err := clientset.Core().Pods(config.Configuration["ENV"].(string)).List(v1.ListOptions{})
+        if err != nil {
+        panic(err.Error())
+        }
+        for _, p := range pods.Items {
         podsMap[p.Status.ContainerStatuses[0].Name] = true
         //config_pre.Log.Debugf("pod name: %v", p.Status.ContainerStatuses[0].Name)
-    }
-    handler.AddMetric("Kubernetes pods", int64(len(pods.Items)), 300) // 300 Max number of pods allowed
-    config.Log.Infof(strconv.Itoa(len(pods.Items)) + " kubernetes pods found.")
+        }
+        handler.AddMetric("Kubernetes pods", int64(len(pods.Items)), 300) // 300 Max number of pods allowed
+        config.Log.Infof(strconv.Itoa(len(pods.Items)) + " kubernetes pods found.")
 
-    return podsMap
+        return podsMap
 }
