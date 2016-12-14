@@ -1,7 +1,7 @@
 message-processor:
   pre:
-    - echo "Building int-avet-conciliation Docker Image"
+    - echo "Building pod-doublecheck Docker Image"
   post:
-    - echo "Finished building int-avet-conciliation Docker Image"
+    - echo "Finished building pod-doublecheck Docker Image"
   build: Dockerfile
-  image: docker-registry.oneboxtickets.com/oneboxtm/int-avet-conciliation
+  image: docker-registry.oneboxtickets.com/oneboxtm/pod-doublecheck
