@@ -28,16 +28,22 @@ func doubleCheckProcessor( checkIntervalTimeSec int, RefreshTimeChan chan int ) 
 		case <- timer.C:
 			processPods()
 		case newRefreshTime := <- RefreshTimeChan:
-			if newRefreshTime == -1 {
-				timer.Stop()
-				config.Log.Noticef("Double-Check timer is now stopped.")
-			} else {
-				timer.Reset(time.Duration(newRefreshTime * 1000) * time.Millisecond)
-				config.Log.Noticef("New refresh time is: %v", newRefreshTime)
-			}
+			reScheduleCheckProcessor(newRefreshTime, timer)
 		}
 	}
 
+}
+
+
+func reScheduleCheckProcessor( newRefreshTime int, timer *time.Timer ) {
+
+	if newRefreshTime <= 0 {
+		timer.Stop()
+		config.Log.Noticef("Double-Check timer is now stopped.")
+	} else {
+		timer.Reset(time.Duration(newRefreshTime * 1000) * time.Millisecond)
+		config.Log.Noticef("New refresh time is: %v", newRefreshTime)
+	}
 }
 
 

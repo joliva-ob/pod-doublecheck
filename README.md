@@ -6,7 +6,7 @@ The app will expose an endpoint with the last check result, basically number of 
 ## Run unit tests
 + go test
 
-## Compiled with runtime with: 
+## Compiled with runtime with:
 + GOOS=windows GOARCH=386 go build -o pod-doublecheck.exe
 + GOOS=linux GOARCH=386 go build -o pod-doublecheck
 + GOOS=darwin GOARCH=386 go build -o pod-doublecheck
@@ -14,26 +14,24 @@ The app will expose an endpoint with the last check result, basically number of 
 ## Build Docker image with
 + cp /source_cfg_files/*env* .
 + docker build -f Dockerfile . -tag pod-doublecheck
-+ docker run --publish 8000:8000 --name pod-doublecheck --rm pod-doublecheck --restart=always pod-doublecheck 
++ docker run --publish 8000:8000 --name pod-doublecheck --rm pod-doublecheck --restart=always pod-doublecheck
 
 ## Kubernetes
 + docker build -t docker-registry.oneboxtickets.com/oneboxtm/pod-doublecheck:version .
 + docker push docker-registry.oneboxtickets.com/oneboxtm/pod-doublecheck:version
 
 ## Environment variables
-| ENV                        | Example value           | 
+| ENV                        | Example value           |
 | -------------------------- |:----------------------- |
-| LOG_FORMAT                 | "%{color}%{time:0102 15:04:05.000} %{level:.4s} %{id:03x} ▶ %{shortfunc}: %{color:reset} %{message}" | 
-| EUREKA_APP_NAME            | pod-doublecheck | 
-| spring_cloud_config_label  | dev |
-| EUREKA_PUBLIC_HOST         | 10.200.2.28 |
-| server_port                | 8080 |
-| ENV                        | dev |
-| spring_cloud_config_uri    | http://localhost:8888 |
-| eureka_instance_ip_address | 10.1.51.167 |
-| spring_profiles_active     | pro |
-| spring_application_name    | pod-doublecheck |
+| LOG_FORMAT                 | "%{color}%{time:0102 15:04:05.000} %{level:.4s} %{id:03x} ▶ %{shortfunc}: %{color:reset} %{message}" |
 | LOG_FILE                   | /opt/pod-doublecheck/log/pod-doublecheck.log |
-| CONF_PATH                  | /opt/pod-doublecheck/conf/ |
-
-## 
+| spring_application_name    | pod-doublecheck |
+| spring_profiles_active     | pro |
+| spring_cloud_config_uri    | http://localhost:8888 |
+| spring_cloud_config_label  | dev |
+| server_port                | 8080 |
+| EUREKA_APP_NAME            | pod-doublecheck |
+| EUREKA_PUBLIC_HOST         | 10.200.2.28 |
+| REFRESH_TIME_SECONDS       | 300 |
+| eureka_instance_ip_address | 10.1.51.167 |
+| ENV                        | dev |

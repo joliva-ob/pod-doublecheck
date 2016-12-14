@@ -60,6 +60,12 @@ func loadBasicsFromEnvironmentVars() map[string]interface{} {
 	newConfig["eureka.instance.ip-address"] = os.Getenv("eureka_instance_ip_address")
 	newConfig["spring.application.name"] = os.Getenv("spring_application_name")
 	newConfig["hostname"], _ = os.Hostname()
+	newConfig["LOG_FORMAT"] = os.Getenv("LOG_FORMAT")
+	newConfig["LOG_FILE"] = os.Getenv("LOG_FILE")
+	newConfig["EUREKA_APP_NAME"] = os.Getenv("EUREKA_APP_NAME")
+	newConfig["EUREKA_PUBLIC_HOST"] = os.Getenv("EUREKA_PUBLIC_HOST")
+	newConfig["REFRESH_TIME_SECONDS"] = os.Getenv("REFRESH_TIME_SECONDS")
+	newConfig["ENV"] = os.Getenv("ENV")
 
 	port, err := strconv.Atoi(newConfig["server.port"].(string))
 	if err != nil {

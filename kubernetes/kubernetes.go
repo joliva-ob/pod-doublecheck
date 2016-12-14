@@ -3,7 +3,6 @@ package kubernetes
 
 import (
 
-  "os"
   "flag"
   "strconv"
 
@@ -18,7 +17,7 @@ import (
 
 
 var (
-  kubeconfig = flag.String("kubeconfig", "/Users/joan/.kube/config", "absolute path to the kubeconfig file")
+  kubeconfig = flag.String("kubeconfig", "kube/config", "absolute path to the kubeconfig file")
 )
 
 
@@ -39,7 +38,7 @@ func GetPodsMap() map[string]bool {
       panic(err.Error())
     }
 
-    pods, err := clientset.Core().Pods(os.Getenv("ENV")).List(v1.ListOptions{})
+    pods, err := clientset.Core().Pods(config.Configuration["ENV"].(string)).List(v1.ListOptions{})
     if err != nil {
         panic(err.Error())
     }
