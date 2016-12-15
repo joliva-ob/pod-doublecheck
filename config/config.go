@@ -66,6 +66,7 @@ func loadBasicsFromEnvironmentVars() map[string]interface{} {
 	newConfig["EUREKA_PUBLIC_HOST"] = os.Getenv("EUREKA_PUBLIC_HOST")
 	newConfig["REFRESH_TIME_SECONDS"] = os.Getenv("REFRESH_TIME_SECONDS")
 	newConfig["ENV"] = os.Getenv("ENV")
+	newConfig["TELEGRAM_CHAT_ID"] = os.Getenv("TELEGRAM_CHAT_ID")
 
 	port, err := strconv.Atoi(newConfig["server.port"].(string))
 	if err != nil {

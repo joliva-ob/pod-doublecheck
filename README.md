@@ -36,6 +36,7 @@ The app will expose an endpoint with the last check result, basically number of 
 | REFRESH_TIME_SECONDS       | 300 |
 | eureka_instance_ip_address | 10.1.51.167 |
 | ENV                        | dev |
+| TELEGRAM_CHAT_ID           | Telegram chat id to send alert messages |
 
 ## Managing the application
 There a couple of endpoint to manage the application, see the insights below:

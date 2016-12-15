@@ -86,7 +86,7 @@ func compareToReport( pods map[string]bool, apps  map[string]*fargo.Application 
 	config.Log.Noticef("%v pods not found in Eureka apps list.", i)
 	if i > 0 {
 		message := "Alert: ["+config.Configuration["ENV"].(string)+"] There are "+strconv.Itoa(i)+" pods not registered into Eureka!\n\r"+appsNotFoundBuffer.String()
-		chatId := "-114003924"
+		chatId := config.Configuration["TELEGRAM_CHAT_ID"].(string)
 		res, err := jacaranda.SendTelegramMessage(message, chatId)
 		if err != nil {
 			config.Log.Errorf("ERROR sending message <%v> to <%v>",message,chatId)
@@ -126,8 +126,8 @@ func applySearchTransformations( podName string ) string {
 		podName = strings.Replace(podName, "MS", "MS-", -1)
 	} else if strings.HasPrefix(podName, "PAYMENTS") {
 		podName = strings.Replace(podName, "PAYMENTS", "PAYMENT", -1)
-	} else if strings.HasPrefix(podName, "GO") {
-		podName = strings.Replace(podName, "GO", "GO-", -1)
+	} else if strings.HasPrefix(podName, "GODOUBLECHECK") {
+		podName = strings.Replace(podName, "GO", "POD-", -1)
 	}
 
 	return podName
@@ -137,7 +137,7 @@ func applySearchTransformations( podName string ) string {
 func searchPodNameInEurekaAppList( inPodTransformedName string, inAppList map[string]*fargo.Application ) bool {
 
 	isFound := false
-	if inPodTransformedName == "CONFIG" || inPodTransformedName == "SPLUNKFORWARDER" || strings.HasSuffix(inPodTransformedName,"TEST") {
+	if inPodTransformedName == "CONFIG" || inPodTransformedName == "SPLUNKFORWARDER" || strings.HasSuffix(inPodTransformedName,"TEST") || inPodTransformedName == "PROMETHEUS" {
 		isFound = true // It just fake the result in order to avoid its verification, those never been registered into Eureka.
 		//config_pre.Log.Warningf("Pod FOUND in Eureka special apps list: %v", inPodTransformedName)
 	} else {
