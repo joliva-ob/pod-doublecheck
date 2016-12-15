@@ -26,9 +26,9 @@ func doubleCheckProcessor( checkIntervalTimeSec int, RefreshTimeChan chan int ) 
 	for {
 		select {
 		case <- timer.C:
-			processPods()
-		case newRefreshTime := <- RefreshTimeChan:
-			reScheduleCheckProcessor(newRefreshTime, timer)
+			processPods( checkIntervalTimeSec, timer )
+		case checkIntervalTimeSec = <- RefreshTimeChan:
+			reScheduleCheckProcessor(checkIntervalTimeSec, timer)
 		}
 	}
 
@@ -48,13 +48,15 @@ func reScheduleCheckProcessor( newRefreshTime int, timer *time.Timer ) {
 
 
 
-func processPods( ) {
+func processPods( refreshTime int, timer *time.Timer ) {
 
 	podsMap := kubernetes.GetPodsMap()	// k: pod name  v: bool found in eureka list
 	appsList := eureka.GetAppsList()	// k: app name	v: Eureka application
 
 	// Compare pods and apps to be able to report results
 	go compareToReport( podsMap, appsList )
+
+	timer.Reset(time.Duration(refreshTime * 1000) * time.Millisecond)
 }
 
 

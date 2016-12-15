@@ -2,8 +2,6 @@ package main
 
 import (
 
-	"os"
-
 	"github.com/pineda89/golang-springboot/eureka"
 	"github.com/pineda89/golang-springboot/actuator"
 	"github.com/joliva-ob/pod-doublecheck/config"
@@ -33,6 +31,5 @@ func main() {
 	config.Log.Noticef("Application successfully started.")
 	eureka.CaptureInterruptSignal()
 	eureka.Deregister()
-	os.Exit(0)
 
 }

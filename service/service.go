@@ -4,7 +4,9 @@ package service
 import (
 
 	"github.com/joliva-ob/pod-doublecheck/handler"
-	"github.com/oneboxtm/onebox-go-message-processor/config"
+
+	"os"
+	"strconv"
 )
 
 
@@ -17,7 +19,7 @@ var (
 func StartService() {
 
 
-	refreshTime, _ := config.Configuration["REFRESH_TIME_SECONDS"].(int) //strconv.Atoi(os.Getenv("REFRESH_TIME_SECONDS"))
+	refreshTime, _ := strconv.Atoi(os.Getenv("REFRESH_TIME_SECONDS")) //config.Configuration["REFRESH_TIME_SECONDS"].(int)
 	handler.RefreshTimeChan = RefreshTimeChan
 
 	go doubleCheckProcessor( refreshTime, RefreshTimeChan )
