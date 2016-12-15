@@ -6,5 +6,5 @@
 ██║   ██║██║╚██╗██║██╔══╝  ██╔══██╗██║   ██║ ██╔██╗
 ╚██████╔╝██║ ╚████║███████╗██████╔╝╚██████╔╝██╔╝ ██╗
  ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝
-     Kubernetes vs Eureka App-Pod double check  (v1.0.9)
+     Kubernetes vs Eureka App-Pod double check  (v1.0.10)
  

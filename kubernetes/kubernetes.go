@@ -23,7 +23,9 @@ var (
 
 func GetPodsMap() map[string]bool {
 
-        kubeconfig = flag.String("kubeconfig", "kube/config_"+config.Configuration["ENV"].(string), "absolute path to the kubeconfig file")
+        if kubeconfig == nil {
+          kubeconfig = flag.String("kubeconfig", "kube/config_"+config.Configuration["ENV"].(string), "absolute path to the kubeconfig file")
+        }
         podsMap := make(map[string]bool)  // k: pod name v: found status, start from true
         flag.Parse()
 

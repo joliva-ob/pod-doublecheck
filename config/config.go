@@ -41,7 +41,7 @@ func LoadConfig() {
 
 	Log.Info("Loading config_pre...")
 	newConfig := loadBasicsFromEnvironmentVars()
-	getConfigFromSpringCloudConfigServer(newConfig["spring.cloud.config_pre.uri"].(string), newConfig)
+	getConfigFromSpringCloudConfigServer(newConfig["spring.cloud.config_pro.uri"].(string), newConfig)
 	Configuration = newConfig
 	Log.Info("Config loaded sucessfuly")
 
