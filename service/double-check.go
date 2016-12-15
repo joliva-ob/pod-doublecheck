@@ -39,7 +39,7 @@ func reScheduleCheckProcessor( newRefreshTime int, timer *time.Timer ) {
 
 	if newRefreshTime <= 0 {
 		timer.Stop()
-		config.Log.Noticef("Double-Check timer is now stopped.")
+		config.Log.Noticef("Double-Check timer is now stopped (%v).", newRefreshTime)
 	} else {
 		timer.Reset(time.Duration(newRefreshTime * 1000) * time.Millisecond)
 		config.Log.Noticef("New refresh time is: %v", newRefreshTime)

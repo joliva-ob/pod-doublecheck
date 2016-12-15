@@ -64,7 +64,7 @@ Just to get the last metrics info like kubernetes pods retrieved, or eureka apps
   }
 }
 ```
-+ PUT http://localhost:8080/refreshtime?-1
++ PUT http://localhost:8080/refreshtime?time=-1
 This is to re-schedule the checking time interval by setting a number of seconds > 0, or a number <= 0 to disable the service.
 + On both cases an Authorization header is needed to set with
 ```
