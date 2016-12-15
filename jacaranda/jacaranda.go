@@ -10,6 +10,7 @@ import (
 func SendTelegramMessage( text string, chatId string ) (*http.Response, error) {
 
 	client := &http.Client{}
+	//url := "http://jacaranda:8001/jacaranda/1.0/sendMessage"
 	url := "http://10.1.2.173:30002/jacaranda/1.0/sendMessage"
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Set("Authorization", "Bear 1736cc7f-7c60-4576-b851-b7b3630cfeab")
