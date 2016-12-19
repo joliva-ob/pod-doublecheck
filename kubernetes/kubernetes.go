@@ -32,7 +32,7 @@ func GetPodsMap() map[string]bool {
         // uses the current context in kubeconfig
         kconfig, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
         if err != nil {
-        panic(err.Error())
+                panic(err.Error())
         }
 
         // creates the clientset
@@ -49,7 +49,7 @@ func GetPodsMap() map[string]bool {
         podsMap[p.Status.ContainerStatuses[0].Name] = true
         //config_pre.Log.Debugf("pod name: %v", p.Status.ContainerStatuses[0].Name)
         }
-        handler.AddMetric("Kubernetes pods", int64(len(pods.Items)), 300) // 300 Max number of pods allowed
+        handler.AddMetric("Kubernetes pods", int64(len(pods.Items)), 300, nil) // 300 Max number of pods allowed
         config.Log.Infof(strconv.Itoa(len(pods.Items)) + " kubernetes pods found.")
 
         return podsMap

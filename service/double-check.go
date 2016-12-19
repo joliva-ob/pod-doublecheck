@@ -10,7 +10,7 @@ import (
 	"github.com/joliva-ob/pod-doublecheck/config"
 	"github.com/joliva-ob/pod-doublecheck/kubernetes"
 	"github.com/joliva-ob/pod-doublecheck/eureka"
-	"github.com/joliva-ob/pod-doublecheck/jacaranda"
+	"github.com/joliva-ob/jacaranda/jacaranda-client"
 	"github.com/hudl/fargo"
 	"github.com/joliva-ob/pod-doublecheck/handler"
 )
@@ -77,19 +77,23 @@ func compareToReport( pods map[string]bool, apps  map[string]*fargo.Application 
 	// Comunicate search results
 	i := 0
 	var appsNotFoundBuffer bytes.Buffer
+	var appsNotFoundList []string
 	for p, b := range pods {
 		if !b {
+			appsNotFoundList = append(appsNotFoundList, p)
 			i++
 			appsNotFoundBuffer.WriteString(strconv.Itoa(i)+". "+p+"\n\r")
 			config.Log.Warningf("Pod not found in Eureka app list: %v", p)
 		}
 	}
-	handler.AddMetric("Pods not found", int64(i), 0)
+	handler.AddMetric("Pods not found", int64(i), 0, appsNotFoundList)
 	config.Log.Noticef("%v pods not found in Eureka apps list.", i)
+
 	if i > 0 {
 		message := "Alert: ["+config.Configuration["ENV"].(string)+"] There are "+strconv.Itoa(i)+" pods not registered into Eureka!\n\r"+appsNotFoundBuffer.String()
 		chatId := config.Configuration["TELEGRAM_CHAT_ID"].(string)
-		res, err := jacaranda.SendTelegramMessage(message, chatId)
+		url := "http://10.1.2.173:30002/jacaranda/1.0/sendMessage"
+		res, err := jacaranda_client.SendTelegramMessage(url, message, chatId)
 		if err != nil {
 			config.Log.Errorf("ERROR sending message <%v> to <%v>",message,chatId)
 		} else {

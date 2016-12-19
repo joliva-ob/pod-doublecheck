@@ -11,15 +11,16 @@ import (
 
 
 
-type MetricType struct {
+type MonitoringType struct {
 	Name string
 	Value int64
 	Threshold int64
 	Alert bool
+	Remarks interface{}
 }
 
 
-var Metrics = make(map[string]*MetricType)
+var Monitoring = make(map[string]*MonitoringType)
 var RefreshTimeChan (chan int)
 
 
@@ -39,20 +40,20 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 
 
 func MonitoringHandler(w http.ResponseWriter, r *http.Request) {
-	b, _ := json.Marshal(Metrics)
+	b, _ := json.Marshal(Monitoring)
 	w.Header().Add("Content-Type","application/json;charset=UTF-8")
 	w.Write([]byte(string(b)))
 }
 
 
-func AddMetric(name string, value int64, threshold int64) *MetricType {
+func AddMetric(name string, value int64, threshold int64, remarks interface{}) *MonitoringType {
 
 	alert := false
 	if value >= threshold && value > 0 {
 		alert = true
 	}
-	metric := &MetricType{Name: name, Value: value, Threshold: threshold, Alert: alert}
-	Metrics[name] = metric
+	metric := &MonitoringType{Name: name, Value: value, Threshold: threshold, Alert: alert, Remarks: remarks}
+	Monitoring[name] = metric
 
 	return metric
 }

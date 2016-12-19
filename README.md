@@ -46,21 +46,26 @@ Just to get the last metrics info like kubernetes pods retrieved, or eureka apps
 {
   "Eureka apps": {
     "Name": "Eureka apps",
-    "Value": 61,
+    "Value": 68,
     "Threshold": 300,
-    "Alert": false
+    "Alert": false,
+    "Remarks": null
   },
   "Kubernetes pods": {
     "Name": "Kubernetes pods",
-    "Value": 0,
+    "Value": 78,
     "Threshold": 300,
-    "Alert": false
+    "Alert": false,
+    "Remarks": null
   },
   "Pods not found": {
     "Name": "Pods not found",
-    "Value": 0,
+    "Value": 1,
     "Threshold": 0,
-    "Alert": false
+    "Alert": true,
+    "Remarks": [
+      "int-ticketing-fcsev"
+    ]
   }
 }
 ```
